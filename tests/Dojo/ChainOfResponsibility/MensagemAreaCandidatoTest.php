@@ -7,88 +7,88 @@ use Dojo\ChainOfResponsibility\DadosUsuario;
 
 class MensagemAreaCandidatoTest extends PHPUnit_Framework_TestCase
 {
-	public function testRetornaNenhumaMesagemDeErro()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("A");
-		$dadosUsuario->setDebitoAutorizado(true);
+    public function testRetornaNenhumaMesagemDeErro()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("A");
+        $dadosUsuario->setDebitoAutorizado(true);
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			false
-		);
-	}
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            false
+        );
+    }
 
-	public function testRetornaMensagemDeErroDeUsuarioTemporario()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("T");
-		$dadosUsuario->setDebitoAutorizado(true);		
+    public function testRetornaMensagemDeErroDeUsuarioTemporario()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("T");
+        $dadosUsuario->setDebitoAutorizado(true);       
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			"Usuario Temporário"
-		);
-	}
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            "Usuario Temporário"
+        );
+    }
 
-	public function testRetornaMensagemDeErroDeUsuarioSuspenso()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("S");
-		$dadosUsuario->setDebitoAutorizado(true);		
+    public function testRetornaMensagemDeErroDeUsuarioSuspenso()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("S");
+        $dadosUsuario->setDebitoAutorizado(true);       
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			"Usuario Suspenso"
-		);
-	}
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            "Usuario Suspenso"
+        );
+    }
 
-	public function testRetornaMensagemDeErroDeUsuarioComCancelamentoProgramado()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("A");
-		$dadosUsuario->setCancelamentoProgramado(true);
+    public function testRetornaMensagemDeErroDeUsuarioComCancelamentoProgramado()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("A");
+        $dadosUsuario->setCancelamentoProgramado(true);
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			"Cancelamento Programado"
-		);
-	}
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            "Cancelamento Programado"
+        );
+    }
 
-	public function testRetornaMensagemDeAlertaDeDebitoNaoAutorizado()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("A");
-		$dadosUsuario->setDebitoAutorizado(false);
+    public function testRetornaMensagemDeAlertaDeDebitoNaoAutorizado()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("A");
+        $dadosUsuario->setDebitoAutorizado(false);
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			"Débito Não Autorizado"
-		);		
-	}
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            "Débito Não Autorizado"
+        );      
+    }
 
-	public function testRetornaMensagemDeAlertaQueUsuarioEstaEmCobranca()
-	{
-		$dadosUsuario = new DadosUsuario();
-		$dadosUsuario->setStatus("A");
-		$dadosUsuario->setDebitoAutorizado(true);
-		$dadosUsuario->setEmCobranca(true);
+    public function testRetornaMensagemDeAlertaQueUsuarioEstaEmCobranca()
+    {
+        $dadosUsuario = new DadosUsuario();
+        $dadosUsuario->setStatus("A");
+        $dadosUsuario->setDebitoAutorizado(true);
+        $dadosUsuario->setEmCobranca(true);
 
-		$mensagemAreaCandidato = new MensagemAreaCandidato();
+        $mensagemAreaCandidato = new MensagemAreaCandidato();
 
-		$this->assertEquals(
-			$mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
-			"Em Cobranca"
-		);		
-	}	
+        $this->assertEquals(
+            $mensagemAreaCandidato->getMensagemPrioritaria($dadosUsuario),
+            "Em Cobranca"
+        );      
+    }   
 }
