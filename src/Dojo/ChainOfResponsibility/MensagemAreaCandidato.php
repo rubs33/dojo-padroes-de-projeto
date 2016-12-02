@@ -1,53 +1,28 @@
-<?php 
+<?php
 
 namespace Dojo\ChainOfResponsibility;
 
-use Dojo\ChainOfResponsibility\DadosUsuario;
+use Dojo\ChainOfResponsibility\Mensagem\Erro\UsuarioTemporario as MensagemErroUsuarioTemporario;
+use Dojo\ChainOfResponsibility\Mensagem\Erro\UsuarioSuspenso as MensagemErroUsuarioSuspenso;
+use Dojo\ChainOfResponsibility\Mensagem\Erro\CancelamentoProgramado as MensagemErroCancelamentoProgramado;
+use Dojo\ChainOfResponsibility\Mensagem\Alerta\DebitoNaoAutorizado as MensagemAlertaDebitoNaoAutorizado;
+use Dojo\ChainOfResponsibility\Mensagem\Alerta\EmCobranca as MensagemAlertaEmCobranca;
 
 class MensagemAreaCandidato
 {
     public function getMensagemPrioritaria(DadosUsuario $usuario)
     {
-        $mensagemErro = $this->getDadosMensagemErro($usuario);
-        if ($mensagemErro) {
-            return $mensagemErro;
-        }
+        $verificadorMensagemPrioritaria = new VerificadorMensagemPrioritaria(
+            [
+                new MensagemErroUsuarioTemporario(),
+                new MensagemErroUsuarioSuspenso(),
+                new MensagemErroCancelamentoProgramado(),
+                new MensagemAlertaDebitoNaoAutorizado(),
+                new MensagemAlertaEmCobranca()
+            ],
+            false
+        );
 
-        $mensagemAlerta = $this->getDadosMensagemAlerta($usuario);
-        if ($mensagemAlerta) {
-            return $mensagemAlerta;
-        }
-
-        return false;
-    }
-
-    private function getDadosMensagemErro(DadosUsuario $usuario)
-    {
-        if ($usuario->getStatus() == "T") {
-            return "Usuario Temporário";
-        }
-
-        if ($usuario->getStatus() == "S") {
-            return "Usuario Suspenso";
-        }
-
-        if ($usuario->getCancelamentoProgramado() == true) {
-            return "Cancelamento Programado";
-        }
-
-        return false;
-    }
-
-    private function getDadosMensagemAlerta(DadosUsuario $usuario)
-    {
-        if ($usuario->getDebitoAutorizado() == false) {
-            return "Débito Não Autorizado";
-        }
-
-        if ($usuario->getEmCobranca() == true) {
-            return "Em Cobranca";
-        }
-
-        return false;
+        return $verificadorMensagemPrioritaria->getDadosMensagem($usuario);
     }
 }
